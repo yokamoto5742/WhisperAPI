@@ -26,10 +26,6 @@ def main():
     # 音声ファイルのアップロード
     uploaded_audio_file = st.file_uploader("音声ファイルをアップロードしてください(20MB以下)", type=["mp3"], key="audio_uploader")
 
-    if st.button('クリア'):
-        st.session_state.uploaded_audio_file = None
-        st.experimental_rerun()
-
     if uploaded_audio_file is not None:
         st.session_state.uploaded_audio_file = uploaded_audio_file
 
