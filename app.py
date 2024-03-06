@@ -18,20 +18,20 @@ def transcribe_audio(file):
 
 
 def main():
-    st.title("音声ファイルの文字起こしツール")
+    st.title("MP3ファイルの文字起こしツール")
 
     if 'uploaded_audio_file' not in st.session_state:
         st.session_state.uploaded_audio_file = None
 
     # 音声ファイルのアップロード
-    uploaded_audio_file = st.file_uploader("音声ファイルをアップロードしてください(20MB以下)", type=["mp3"], key="audio_uploader")
+    uploaded_audio_file = st.file_uploader("音声ファイルをアップロードしてください(25MB以下)", type=["mp3"], key="audio_uploader")
 
     if uploaded_audio_file is not None:
         st.session_state.uploaded_audio_file = uploaded_audio_file
 
-        # ファイルサイズのチェック（20MB以上の場合はエラーメッセージを表示）
-        if uploaded_audio_file.size > 20480 * 1024:
-            st.error("ファイルサイズが大きすぎます。20MB以下のファイルをアップロードしてください。")
+        # ファイルサイズのチェック（25MB以上の場合はエラーメッセージを表示）
+        if uploaded_audio_file.size > 25 * 1024 * 1024:
+            st.error("ファイルサイズが大きすぎます。25MB以下のファイルをアップロードしてください。")
         else:
             # 音声を再生
             st.audio(uploaded_audio_file)
