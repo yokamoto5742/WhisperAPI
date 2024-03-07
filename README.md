@@ -38,7 +38,7 @@ pip install streamlit openai
 プロジェクトディレクトリで以下のコマンドを実行します。
 
 ```bash
-streamlit run your_script_name.py
+streamlit run app.py
 ```
 
 ## 注意事項
