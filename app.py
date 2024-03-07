@@ -18,8 +18,9 @@ def transcribe_audio(file):
 
 
 def main():
-    st.title("MP3ファイルの文字起こしツール")
+    st.title("MP3ファイルの文字起こしアプリ")
 
+    # 音声ファイルのアップロード状態を初期化
     if 'uploaded_audio_file' not in st.session_state:
         st.session_state.uploaded_audio_file = None
 
