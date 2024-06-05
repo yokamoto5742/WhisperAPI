@@ -18,14 +18,18 @@ def transcribe_audio(file):
 
 
 def main():
-    st.title("MP3ファイルの文字起こしアプリ")
+    st.title("音声ファイルの文字起こしアプリ")
 
     # 音声ファイルのアップロード状態を初期化
     if 'uploaded_audio_file' not in st.session_state:
         st.session_state.uploaded_audio_file = None
 
     # 音声ファイルのアップロード
-    uploaded_audio_file = st.file_uploader("音声ファイルをアップロードしてください(25MB以下)", type=["mp3"], key="audio_uploader")
+    uploaded_audio_file = st.file_uploader(
+        "音声ファイルをアップロードしてください(25MB以下)",
+        type=["mp3", "mp4", "webm", "wav", "mpeg", "mpga", "m4a"],
+        key="audio_uploader"
+    )
 
     if uploaded_audio_file is not None:
         st.session_state.uploaded_audio_file = uploaded_audio_file
