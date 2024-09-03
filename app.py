@@ -1,20 +1,32 @@
 import streamlit as st
+import tempfile
+import os
+from groq import Groq
 
-from openai import OpenAI
-
-client = OpenAI()
+# Groqクライアントの設定
+client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
 
 
 def transcribe_audio(file):
     """ 音声ファイルを文字起こしする """
     try:
-        return client.audio.transcriptions.create(
-            model="whisper-1",
-            file=file,
-            response_format="text",
-        )
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as temp_audio:
+            temp_audio.write(file.getvalue())
+            temp_audio_path = temp_audio.name
+
+        with open(temp_audio_path, "rb") as audio_file:
+            transcription = client.audio.transcriptions.create(
+                file=(os.path.basename(temp_audio_path), audio_file),
+                model="whisper-large-v3",
+                response_format="text",
+                language="ja"
+            )
+
+        os.unlink(temp_audio_path)
+        return transcription
     except Exception as e:
         st.error(f"文字起こし中にエラーが発生しました: {e}")
+        return None
 
 
 def main():
