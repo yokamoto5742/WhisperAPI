@@ -54,7 +54,7 @@ def main():
 
     # 音声ファイルのアップロード
     uploaded_audio_file = st.file_uploader(
-        "音声ファイルをアップロードしてください(100MB未満)",
+        "音声ファイルをアップロードしてください(40MB未満)",
         type=["mp3", "mp4", "webm", "wav", "mpeg", "mpga", "m4a"],
         key="audio_uploader"
     )
@@ -62,8 +62,8 @@ def main():
     if uploaded_audio_file is not None:
         st.session_state.uploaded_audio_file = uploaded_audio_file
 
-        if uploaded_audio_file.size > 100 * 1024 * 1024:
-            st.error("ファイルサイズが大きすぎます。100MB未満のファイルをアップロードしてください。")
+        if uploaded_audio_file.size > 40 * 1024 * 1024:
+            st.error("ファイルサイズが大きすぎます。40MB未満のファイルをアップロードしてください。")
         else:
             st.audio(uploaded_audio_file)
 
