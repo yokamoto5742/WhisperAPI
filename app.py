@@ -32,21 +32,6 @@ def transcribe_audio(file):
         return None
 
 
-def transcribe_audio_from_url(url):
-    try:
-        transcription = client.audio.transcriptions.create(
-            url=url,  # URLパラメータを使用
-            model="whisper-large-v3",
-            response_format="text",
-            language="ja"
-        )
-
-        return transcription
-    except Exception as e:
-        st.error(f"文字起こし中にエラーが発生しました: {e}")
-        return None
-
-
 def show_setting_modal():
     with st.expander("説明"):
         tab1, tab2 = st.tabs(["アプリについて", "プライバシーガイドライン"])
@@ -63,75 +48,42 @@ def show_setting_modal():
 def main():
     st.title("音声ファイルの文字起こしアプリ")
 
-    # 処理方法の選択
-    processing_method = st.radio(
-        "処理方法を選択してください",
-        ["ファイルをアップロード", "URLから処理"]
+    # 音声ファイルのアップロード状態を初期化
+    if 'uploaded_audio_file' not in st.session_state:
+        st.session_state.uploaded_audio_file = None
+
+    # 音声ファイルのアップロード
+    uploaded_audio_file = st.file_uploader(
+        "音声ファイルをアップロードしてください(25MB未満)",
+        type=["mp3", "mp4", "webm", "wav", "mpeg", "mpga", "m4a"],
+        key="audio_uploader"
     )
 
-    if processing_method == "ファイルをアップロード":
-        # 既存のアップロード処理
-        # 音声ファイルのアップロード状態を初期化
-        if 'uploaded_audio_file' not in st.session_state:
-            st.session_state.uploaded_audio_file = None
+    if uploaded_audio_file is not None:
+        st.session_state.uploaded_audio_file = uploaded_audio_file
 
-        # 音声ファイルのアップロード
-        uploaded_audio_file = st.file_uploader(
-            "音声ファイルをアップロードしてください(40MB以下)",
-            type=["mp3", "mp4", "webm", "wav", "mpeg", "mpga", "m4a"],
-            key="audio_uploader"
-        )
+        if uploaded_audio_file.size > 25 * 1024 * 1024:
+            st.error("ファイルサイズが大きすぎます。25MB未満のファイルをアップロードしてください。")
+        else:
+            st.audio(uploaded_audio_file)
 
-        if uploaded_audio_file is not None:
-            st.session_state.uploaded_audio_file = uploaded_audio_file
+            transcription_message = st.empty()
+            transcription_message.subheader("文字起こし中...")
 
-            if uploaded_audio_file.size > 40 * 1024 * 1024:
-                st.error("ファイルサイズが大きすぎます。40MB以下のファイルをアップロードしてください。")
-            else:
-                st.audio(uploaded_audio_file)
+            transcript = transcribe_audio(uploaded_audio_file)
 
-                transcription_message = st.empty()
-                transcription_message.subheader("文字起こし中...")
+            transcription_message.empty()
 
-                transcript = transcribe_audio(uploaded_audio_file)
+            if transcript:
+                st.subheader("出力結果")
+                st.text_area("文字起こし文章", transcript, height=500)
 
-                transcription_message.empty()
-
-                if transcript:
-                    st.subheader("出力結果")
-                    st.text_area("文字起こし文章", transcript, height=500)
-
-                    st.download_button(
-                        label="ダウンロード",
-                        data=transcript.encode("utf-8"),
-                        file_name="transcription.txt",
-                        mime="text/plain"
-                    )
-    else:
-        # URLから処理する場合
-        audio_url = st.text_input("音声ファイルのURLを入力してください (最大100MB)")
-
-        if audio_url:
-            st.info("URLから音声を処理します。最大100MBまで対応しています。")
-
-            if st.button("文字起こし開始"):
-                transcription_message = st.empty()
-                transcription_message.subheader("文字起こし中...")
-
-                transcript = transcribe_audio_from_url(audio_url)
-
-                transcription_message.empty()
-
-                if transcript:
-                    st.subheader("出力結果")
-                    st.text_area("文字起こし文章", transcript, height=500)
-
-                    st.download_button(
-                        label="ダウンロード",
-                        data=transcript.encode("utf-8"),
-                        file_name="transcription.txt",
-                        mime="text/plain"
-                    )
+                st.download_button(
+                    label="ダウンロード",
+                    data=transcript.encode("utf-8"),
+                    file_name="transcription.txt",
+                    mime="text/plain"
+                )
 
     if st.button("アプリの説明"):
         show_setting_modal()
