@@ -1,0 +1,7 @@
+logs/
+.idea/
+
+.env
+.coverage
+*.spec
+*.iml
