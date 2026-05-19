@@ -45,7 +45,7 @@ def show_setting_modal():
             st.markdown(readme_content)
 
         with tab2:
-            privacy_content = load_markdown_file("privacy_guidelines.md")
+            privacy_content = load_markdown_file("docs/privacy_guidelines.md")
             st.markdown(privacy_content)
 
 
