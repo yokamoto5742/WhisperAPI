@@ -1,13 +1,17 @@
-import streamlit as st
-import tempfile
 import os
+import tempfile
+
+import streamlit as st
 from groq import Groq
 
+from utils.env_loader import load_environment_variables
+
+load_environment_variables()
 client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
 
 
 def load_markdown_file(filename):
-    with open(filename, 'r', encoding='utf-8') as file:
+    with open(filename, "r", encoding="utf-8") as file:
         return file.read()
 
 
@@ -22,7 +26,7 @@ def transcribe_audio(file):
                 file=(os.path.basename(temp_audio_path), audio_file),
                 model="whisper-large-v3",
                 response_format="text",
-                language="ja"
+                language="ja",
             )
 
         os.unlink(temp_audio_path)
@@ -49,21 +53,23 @@ def main():
     st.title("音声ファイルの文字起こしアプリ")
 
     # 音声ファイルのアップロード状態を初期化
-    if 'uploaded_audio_file' not in st.session_state:
+    if "uploaded_audio_file" not in st.session_state:
         st.session_state.uploaded_audio_file = None
 
     # 音声ファイルのアップロード
     uploaded_audio_file = st.file_uploader(
         "音声ファイルをアップロードしてください(25MB未満)",
         type=["mp3", "mp4", "webm", "wav", "mpeg", "mpga", "m4a"],
-        key="audio_uploader"
+        key="audio_uploader",
     )
 
     if uploaded_audio_file is not None:
         st.session_state.uploaded_audio_file = uploaded_audio_file
 
         if uploaded_audio_file.size > 25 * 1024 * 1024:
-            st.error("ファイルサイズが大きすぎます。25MB未満のファイルをアップロードしてください。")
+            st.error(
+                "ファイルサイズが大きすぎます。25MB未満のファイルをアップロードしてください。"
+            )
         else:
             st.audio(uploaded_audio_file)
 
@@ -82,7 +88,7 @@ def main():
                     label="ダウンロード",
                     data=transcript.encode("utf-8"),
                     file_name="transcription.txt",
-                    mime="text/plain"
+                    mime="text/plain",
                 )
 
     if st.button("アプリの説明"):

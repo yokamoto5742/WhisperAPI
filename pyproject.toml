@@ -4,13 +4,15 @@ version = "0.1.0"
 requires-python = ">=3.13"
 
 dependencies = [
-    "groq>=0.24.0",         # Groq AI APIクライアント
-    "streamlit>=1.45.1",    # Webアプリフレームワーク
+    "groq>=0.24.0",
+    "streamlit>=1.45.1",
+    "python-dotenv==1.1.1",
 ]
 
 [dependency-groups]
 dev = [
     "coverage==7.9.2",
+    "ruff==0.15.13",
     "pyright==1.1.409",
     "pytest==8.4.1",
     "pytest-cov==6.2.1",
