@@ -57,3 +57,11 @@ streamlit run app.py
 - 文字起こしには「whisper-large-v3」モデルを使用しています。
 
 このStreamlitアプリケーションを使って、様々な形式の音声ファイルからの高精度な日本語文字起こしを体験してください。
+
+## ライセンス
+
+このプロジェクトのライセンス情報については、 [LICENSE](docs/LICENSE) を参照してください。
+
+## 更新履歴
+
+更新履歴は [CHANGELOG.md](docs//CHANGELOG.md) を参照してください。
