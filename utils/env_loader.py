@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 
 def load_environment_variables():
     base_dir = Path(__file__).parent.parent
-    env_path = os.path.join(base_dir, '.env')
+    env_path = os.path.join(base_dir, ".env")
 
     if os.path.exists(env_path):
         load_dotenv(env_path)
