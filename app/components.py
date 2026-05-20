@@ -8,7 +8,7 @@ def load_markdown_file(filename: str) -> str:
 
 def show_setting_modal() -> None:
     with st.expander("説明"):
-        tab1, tab2 = st.tabs(["アプリについて", "プライバシーガイドライン"])
+        tab1, tab2 = st.tabs(["README", "プライバシーガイドライン"])
 
         with tab1:
             st.markdown(load_markdown_file("README.md"))
