@@ -4,7 +4,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 
-def load_environment_variables():
+def load_environment_variables() -> None:
     base_dir = Path(__file__).parent.parent
     env_path = os.path.join(base_dir, ".env")
 
@@ -13,3 +13,8 @@ def load_environment_variables():
         print(".envファイルを読み込みました")
     else:
         print("警告: .envファイルが見つかりません。")
+
+
+def load_env_variables() -> dict[str, str | None]:
+    load_environment_variables()
+    return {"GROQ_API_KEY": os.environ.get("GROQ_API_KEY")}
