@@ -3,8 +3,10 @@ import streamlit as st
 from app.components import show_setting_modal
 from service.transcription_service import transcribe_uploaded_file
 from utils.env_loader import load_environment_variables
+from utils.log_rotation import setup_logging
 
 load_environment_variables()
+setup_logging()
 
 
 def main() -> None:
